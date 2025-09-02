@@ -1,0 +1,165 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ store_name }} - Online Shopping</title>
+    <link rel="stylesheet" href="{% static 'ecommerce/css/style.css' %}" />
+</head>
+
+<body>
+    <div class="ecommerce-container">
+        <!-- Header -->
+        <header class="store-header">
+            <h1>{{ store_name }}</h1>
+            <nav class="store-nav">
+                <a href="/">Portfolio</a>
+                <a href="/blog/">Blog</a>
+                <a href="/ecommerce/" class="active">Shop</a>
+            </nav>
+            <div class="cart-info">
+                <span class="cart-icon">🛒</span>
+                <span class="cart-count">{{ cart_items_count }}</span>
+                <span class="cart-total">${{ total_cart_value }}</span>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <h2>Welcome to {{ store_name }}</h2>
+            <p>Discover amazing tech gadgets at unbeatable prices!</p>
+        </section>
+
+        <!-- Categories -->
+        <section class="categories">
+            <h3>Shop by Category</h3>
+            <div class="categories-grid">
+                {% for category in categories %}
+                <div class="category-item">
+                    <h4>{{ category.name|title }}</h4>
+                    <p>{{ category.product_count }} product{{ category.product_count|pluralize }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Filters -->
+        <section class="filters">
+            <button class="filter-btn active">All Products</button>
+            <button class="filter-btn">Featured ({{ featured_products_count }})</button>
+            <button class="filter-btn">On Sale ({{ on_sale_products }})</button>
+            <button class="filter-btn">In Stock</button>
+        </section>
+
+        <!-- Products Grid -->
+        <section class="products">
+            <h3>Our Products ({{ products|length }})</h3>
+            <div class="products-grid">
+                {% for product in products %}
+                <div
+                    class="product-card {% if not product.in_stock %}out-of-stock{% endif %} {% if product.is_featured %}featured{% endif %}">
+                    {% if product.discount %}
+                    <div class="discount-badge">-{{ product.discount }}%</div>
+                    {% endif %}
+                    {% if product.is_featured %}
+                    <div class="featured-badge">Featured</div>
+                    {% endif %}
+                    <div class="product-image">
+                        <img src="https://placehold.co/300x300/667eea/ffffff?text={{ product.name|truncatechars:20|urlencode }}"
+                            alt="{{ product.name }}" />
+                    </div>
+                    <div class="product-info">
+                        <h4>{{ product.name|title }}</h4>
+                        <p class="product-description">{{ product.description|truncatewords:15 }}</p>
+                        <div class="price-section">
+                            {% if product.discount %}
+                            <span class="original-price">${{ product.original_price }}</span>
+                            {% endif %}
+                            <span class="current-price">${{ product.price }}</span>
+                        </div>
+                        <div class="rating">
+                            <span class="stars">★★★★☆</span>
+                            <span class="rating-text">{{ product.rating }} ({{ product.reviews_count }} reviews)</span>
+                        </div>
+                        <div class="stock-info">
+                            {% if product.in_stock %}
+                            <span class="in-stock">In Stock ({{ product.stock_quantity }} available)</span>
+                            {% else %}
+                            <span class="out-of-stock">Out of Stock</span>
+                            {% endif %}
+                        </div>
+                        <div class="product-features">
+                            <strong>Features:</strong> {{ product.features|join:" • "|truncatewords:8 }}
+                        </div>
+                        <div class="product-actions">
+                            <button class="add-to-cart-btn" {% if not product.in_stock %}disabled{% endif %}>
+                                {% if product.in_stock %}Add to Cart{% else %}Out of Stock{% endif %}
+                            </button>
+                            <button class="view-details-btn">View Details</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Shopping Cart Preview -->
+        <section class="cart-preview">
+            <h3>Shopping Cart</h3>
+            <div class="cart-summary">
+                <p><strong>Items:</strong> {{ cart_items_count }}</p>
+                <p><strong>Total:</strong> ${{ total_cart_value }}</p>
+                <button class="checkout-btn">Proceed to Checkout</button>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="store-footer">
+            <p>&copy; 2024 {{ store_name }}. All rights reserved.</p>
+            <p>Prices and availability are subject to change without notice.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Simple filter functionality
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+
+                const filter = this.textContent.toLowerCase();
+                const products = document.querySelectorAll('.product-card');
+
+                products.forEach(product => {
+                    if (filter.includes('all')) {
+                        product.style.display = 'block';
+                    } else if (filter.includes('featured')) {
+                        product.style.display = product.classList.contains('featured') ? 'block' : 'none';
+                    } else if (filter.includes('sale')) {
+                        product.style.display = product.querySelector('.discount-badge') ? 'block' : 'none';
+                    } else if (filter.includes('stock')) {
+                        product.style.display = !product.classList.contains('out-of-stock') ? 'block' : 'none';
+                    }
+                });
+            });
+        });
+
+        // Add to cart animation
+        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                if (!this.disabled) {
+                    this.textContent = 'Added!';
+                    this.style.background = '#27ae60';
+                    setTimeout(() => {
+                        this.textContent = 'Add to Cart';
+                        this.style.background = '';
+                    }, 2000);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
