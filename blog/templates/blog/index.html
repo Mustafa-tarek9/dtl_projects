@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ blog_title }}</title>
+    <link rel="stylesheet" href="{% static 'blog/css/style.css' %}" />
+</head>
+
+<body>
+    <div class="blog-container">
+        <!-- Header -->
+        <header class="blog-header">
+            <h1>{{ blog_title }}</h1>
+            <nav class="blog-nav">
+                <a href="/">Portfolio</a>
+                <a href="/blog/" class="active">Blog</a>
+                <a href="/ecommerce/">Shop</a>
+            </nav>
+        </header>
+
+        <!-- Posts Section -->
+        <section class="posts">
+            <h2>Latest Posts</h2>
+            <div class="posts-grid">
+                {% for post in posts %}
+                <article class="post-card {% if not post.is_published %}unpublished{% endif %}">
+                    <h3>{{ post.title }}</h3>
+                    <p class="post-meta">
+                        By {{ post.author }} | {{ post.publish_date|date:"F j, Y" }} |
+                        Categories: {{ post.categories|join:", " }} |
+                        Comments: {{ post.comments_count }} |
+                        Read Time: {{ post.read_time }} min
+                    </p>
+                    <p class="post-content">{{ post.content|truncatewords:30 }}</p>
+                    {% if not post.is_published %}
+                    <p class="unpublished-note">This post is not published yet.</p>
+                    {% endif %}
+                    <a href="#" class="read-more">Read More</a>
+                </article>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <section class="categories">
+                <h3>Categories</h3>
+                <ul>
+                    {% for category in categories %}
+                    <li>{{ category.name }} ({{ category.post_count }})</li>
+                    {% endfor %}
+                </ul>
+            </section>
+
+            <section class="recent-comments">
+                <h3>Recent Comments</h3>
+                <ul>
+                    {% for comment in recent_comments %}
+                    <li>
+                        <strong>{{ comment.author }}</strong> on <em>{{ comment.post }}</em>:<br />
+                        "{{ comment.content }}" <br />
+                        <small>{{ comment.date }}</small>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </section>
+        </aside>
+
+        <!-- Footer -->
+        <footer class="blog-footer">
+            <p>&copy; 2024 {{ blog_title }}. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+
+</html>

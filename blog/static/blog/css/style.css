@@ -1,0 +1,165 @@
+/* blog/static/blog/css/style.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Georgia', serif;
+    background: #f9f9f9;
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.blog-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Header */
+.blog-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.blog-header h1 {
+    font-size: 3em;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.blog-nav a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: #7f8c8d;
+    font-weight: 600;
+    font-size: 1.1em;
+    transition: color 0.3s ease;
+}
+
+.blog-nav a.active,
+.blog-nav a:hover {
+    color: #e74c3c;
+}
+
+/* Posts Section */
+.posts {
+    margin-bottom: 50px;
+}
+
+.posts h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.posts-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+}
+
+/* Post Cards */
+.post-card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
+}
+
+.post-card:hover {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+}
+
+.post-card.unpublished {
+    opacity: 0.6;
+}
+
+.post-card h3 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
+    color: #34495e;
+}
+
+.post-meta {
+    font-size: 0.9em;
+    color: #7f8c8d;
+    margin-bottom: 15px;
+}
+
+.post-content {
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.unpublished-note {
+    font-style: italic;
+    color: #e74c3c;
+    margin-bottom: 10px;
+}
+
+.read-more {
+    text-decoration: none;
+    color: #e74c3c;
+    font-weight: 700;
+    font-size: 1em;
+    transition: color 0.3s ease;
+}
+
+.read-more:hover {
+    color: #c0392b;
+}
+
+/* Sidebar */
+.sidebar {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    height: fit-content;
+}
+
+.sidebar section {
+    margin-bottom: 30px;
+}
+
+.sidebar h3 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar li {
+    margin-bottom: 10px;
+    font-size: 1em;
+    color: #555;
+}
+
+/* Footer */
+.blog-footer {
+    text-align: center;
+    padding: 20px 0;
+    color: #7f8c8d;
+    font-size: 0.9em;
+    border-top: 1px solid #eee;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .posts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        margin-top: 40px;
+    }
+}
