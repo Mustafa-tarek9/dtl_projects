@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My portfolio</title>
+    <link rel="stylesheet" href="{% static 'portfolio/css/style.css' %}">
+</head>
+
+<body>
+    <div class="container">
+
+        <header class="hero">
+            <h1>{{ name|title }}</h1>
+            <h2>{{ title }}</h2>
+            <div class="contact-info">
+                <p><strong>Email:</strong> mostafaramadan664@gamil.com</p>
+                <p><strong>Phone:</strong> +201019482235</p>
+                <p><strong>Location:</strong> Egypt-Elmahalla elkoubra </p>
+            </div>
+        </header>
+
+
+        <section class="about">
+            <h3>About Me</h3>
+            <p>A passionate Computer Science student interested in software development, algorithms, and building
+                innovative web applications. Eager to learn and contribute to real-world projects.</p>
+            <p class="full-text" style="display:none;">{{ about }}</p>
+            <button onclick="toggleText()">Read {{ about|truncatewords:30|length|add:0 > 50|yesno:'less,more'
+                }}</button>
+        </section>
+
+        <section class="skills">
+            <h3>Skills</h3>
+            <div class="skills-grid">
+                {% for skill in skills %}
+                <div class="skill-item">
+                    <span>{{ skill|upper }}</span>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section class="projects">
+            <h3>Projects ({{ projects|length }})</h3>
+            <div class="projects-grid">
+                {% for project in projects %}
+                <div class="project-card">
+                    <h4>{{ project.title|title }}</h4>
+                    <p>{{ project.description }}</p>
+                    <div class="technologies">
+                        {% for tech in project.technologies %}
+                        <span class="tech-tag">{{ tech|lower }}</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section class="experience">
+            <h3>Experience</h3>
+            {% for exp in experience %}
+            <div class="experience-item">
+                <h4>{{ exp.position|title }} at {{ exp.company }}</h4>
+                <p class="period">{{ exp.period }}</p>
+                <p>{{ exp.description|capfirst }}</p>
+            </div>
+            {% endfor %}
+        </section>
+    </div>
+
+    <script>
+        function toggleText() {
+            const shortText = document.querySelector('.about p');
+            const fullText = document.querySelector('.full-text');
+            const button = document.querySelector('.about button');
+
+            if (fullText.style.display === 'none') {
+                fullText.style.display = 'block';
+                shortText.style.display = 'none';
+                button.textContent = 'Read less';
+            } else {
+                fullText.style.display = 'none';
+                shortText.style.display = 'block';
+                button.textContent = 'Read more';
+            }
+        }
+    </script>
+</body>
+
+</html>
